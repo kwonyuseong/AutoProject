@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title></title>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script>
+
+    /* * * * * * *
+
+    0메일에서온 키 갚을 불러온다.
+
+    1키NO를 넣으면 쿼리문을 만들어준다
+      1-1 (2018 06 13)
+      개행이 있는 엑셀 열을 붙여 넣으면 'xxxxx', 의 형태로 출력됨
+      1-2
+
+    2 쿼리를 날리고 데이터를 받아온다
+
+    3 넣은 값과 돌아온 값을 비교하는 페이지를 만든다.
+
+    4 참된 결과일 경우 삭제 처리를 실행한다
+
+    4-1 하나라도 일치 하지 않는경우 작업을 전면 중단한다.
+
+    5 쿼리를 다시 날리고 엑셀에 결과를 만든다 색칠하고 칸 색칠하고 이쁘게 꾸민다
+
+    6 완료 메일을 보낸다
+      * * * * * * */
+
+
+  /* * * * * * *
+   * 진행 상황 2018 06 13
+   * * * * * * *
+      2시간 반 정도 만듬
+      엑셀의 두 개의 열을 같이 붙여 넣으면 오른쪽에 탭이 남는 현상이 발생
+      추후 수정 예정 그러나 귀찮
+      충분히 사용가능한 성능임
+    * * * * * * */
+
+  $(document).ready(function(){
+    $('#change').click(function(){
+      change();
+    });
+
+    function change(){
+
+      var text_split
+      //입력값을 가져온다
+      var text = $("#input_text").val();
+      var result_text = "";
+      text =  $.trim(text);
+
+    //엔터 단위로 자른다.
+      text_split = text.split('\n');
+    //한줄씩 읽어 간다
+    for (var i = 0; i < text_split.length; i++) {
+      if(text_split[i] == "" || text_split[i] == "\n" || text_split[i] == "\t" ){
+        alert("sex!");
+      }else{
+        //탭제거
+        text_split[i] = text_split[i].replace('\t', "");
+        //text_split[i] 의 공백을 없엔다.
+        text_split[i] = text_split[i].replace(/ /g, "");
+        //text_split[i] 의 공백을 없엔다.
+        text_split[i] = text_split[i].replace('', "");
+          //
+          if(text_split.length == (i+1)){
+            text_split[i] = "'" + text_split[i] + "'";
+          }else{
+            text_split[i] = "'" + text_split[i] + "',\n";
+          }
+          result_text = result_text + text_split[i];
+      }
+    }
+    output(result_text);
+
+
+
+      //양쪽 공백 제거
+      //양쪽
+    }
+
+
+    function output(arg_text){
+      $('#result_text').empty();
+      $('#result_text').text(arg_text);
+    }
+  });
+
+
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container-fluid">
+           <div class="navbar-header">
+             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+             </button>
+             <a class="navbar-brand" href="#">Project name</a>
+           </div>
+           <div id="navbar" class="navbar-collapse collapse">
+             <ul class="nav navbar-nav navbar-right">
+               <li><a href="#">Dashboard</a></li>
+               <li><a href="#">Settings</a></li>
+               <li><a href="#">Profile</a></li>
+               <li><a href="#">Help</a></li>
+             </ul>
+             <form class="navbar-form navbar-right">
+               <input type="text" class="form-control" placeholder="Search...">
+             </form>
+           </div>
+         </div>
+       </nav>
+
+       <div class="container-fluid">
+         <div class="row">
+           <div class="col-sm-3 col-md-2 sidebar">
+             <ul class="nav nav-sidebar">
+               <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+               <li><a href="#">Reports</a></li>
+               <li><a href="#">Analytics</a></li>
+               <li><a href="#">Export</a></li>
+             </ul>
+             <ul class="nav nav-sidebar">
+               <li><a href="">Nav item</a></li>
+               <li><a href="">Nav item again</a></li>
+               <li><a href="">One more nav</a></li>
+               <li><a href="">Another nav item</a></li>
+               <li><a href="">More navigation</a></li>
+             </ul>
+             <ul class="nav nav-sidebar">
+               <li><a href="">Nav item again</a></li>
+               <li><a href="">One more nav</a></li>
+               <li><a href="">Another nav item</a></li>
+             </ul>
+           </div>
+           <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+             <div class=" col-md-6">
+               <h1 class="page-header">入力</h1>
+               <!-- *********************  입력창   ********************************* -->
+              <textarea name="name" rows="25" cols="40" class="form-control" id="input_text"></textarea>
+             </div>
+
+             <div class=" col-md-6">
+               <h1 class="page-header">出力</h1>
+               <!-- *********************  출력창   ********************************* -->
+              <textarea name="name" rows="25" cols="40" class="form-control" id="result_text"></textarea>
+             </div>
+
+<!-- *********************  버 튼   ********************************* -->
+             <!-- <div class="row placeholders">
+               <div class="col-xs-6 col-sm-3 placeholder">
+                 <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+                 <h4>Label</h4>
+                 <span class="text-muted">Something else</span>
+               </div>
+               <div class="col-xs-6 col-sm-3 placeholder">
+                 <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+                 <h4>Label</h4>
+                 <span class="text-muted">Something else</span>
+               </div>
+               <div class="col-xs-6 col-sm-3 placeholder">
+                 <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+                 <h4>Label</h4>
+                 <span class="text-muted">Something else</span>
+               </div>
+               <div class="col-xs-6 col-sm-3 placeholder">
+                 <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+                 <h4>Label</h4>
+                 <span class="text-muted">Something else</span>
+               </div>
+             </div> -->
+
+              <div class="col-md-12">
+                <h2 class="sub-header">ボタン</h2>
+                    <button class="btn btn" type="button" name="button" id="change" >両横に’をつける</button>
+
+
+                <div class="table-responsive">
+              </div>
+               <!--
+               <table class="table table-striped">
+                 <thead>
+                   <tr>
+                     <th>#</th>
+                     <th>Header</th>
+                     <th>Header</th>
+                     <th>Header</th>
+                     <th>Header</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <td>1,001</td>
+                     <td>Lorem</td>
+                     <td>ipsum</td>
+                     <td>dolor</td>
+                     <td>sit</td>
+                   </tr>
+                   <tr>
+                     <td>1,002</td>
+                     <td>amet</td>
+                     <td>consectetur</td>
+                     <td>adipiscing</td>
+                     <td>elit</td>
+                   </tr>
+                   <tr>
+                     <td>1,003</td>
+                     <td>Integer</td>
+                     <td>nec</td>
+                     <td>odio</td>
+                     <td>Praesent</td>
+                   </tr>
+                   <tr>
+                     <td>1,003</td>
+                     <td>libero</td>
+                     <td>Sed</td>
+                     <td>cursus</td>
+                     <td>ante</td>
+                   </tr>
+                   <tr>
+                     <td>1,004</td>
+                     <td>dapibus</td>
+                     <td>diam</td>
+                     <td>Sed</td>
+                     <td>nisi</td>
+                   </tr>
+                   <tr>
+                     <td>1,005</td>
+                     <td>Nulla</td>
+                     <td>quis</td>
+                     <td>sem</td>
+                     <td>at</td>
+                   </tr>
+                   <tr>
+                     <td>1,006</td>
+                     <td>nibh</td>
+                     <td>elementum</td>
+                     <td>imperdiet</td>
+                     <td>Duis</td>
+                   </tr>
+                   <tr>
+                     <td>1,007</td>
+                     <td>sagittis</td>
+                     <td>ipsum</td>
+                     <td>Praesent</td>
+                     <td>mauris</td>
+                   </tr>
+                   <tr>
+                     <td>1,008</td>
+                     <td>Fusce</td>
+                     <td>nec</td>
+                     <td>tellus</td>
+                     <td>sed</td>
+                   </tr>
+                   <tr>
+                     <td>1,009</td>
+                     <td>augue</td>
+                     <td>semper</td>
+                     <td>porta</td>
+                     <td>Mauris</td>
+                   </tr>
+                   <tr>
+                     <td>1,010</td>
+                     <td>massa</td>
+                     <td>Vestibulum</td>
+                     <td>lacinia</td>
+                     <td>arcu</td>
+                   </tr>
+                   <tr>
+                     <td>1,011</td>
+                     <td>eget</td>
+                     <td>nulla</td>
+                     <td>Class</td>
+                     <td>aptent</td>
+                   </tr>
+                   <tr>
+                     <td>1,012</td>
+                     <td>taciti</td>
+                     <td>sociosqu</td>
+                     <td>ad</td>
+                     <td>litora</td>
+                   </tr>
+                   <tr>
+                     <td>1,013</td>
+                     <td>torquent</td>
+                     <td>per</td>
+                     <td>conubia</td>
+                     <td>nostra</td>
+                   </tr>
+                   <tr>
+                     <td>1,014</td>
+                     <td>per</td>
+                     <td>inceptos</td>
+                     <td>himenaeos</td>
+                     <td>Curabitur</td>
+                   </tr>
+                   <tr>
+                     <td>1,015</td>
+                     <td>sodales</td>
+                     <td>ligula</td>
+                     <td>in</td>
+                     <td>libero</td>
+                   </tr>
+                 </tbody>
+               </table>
+             -->
+           </div>
+
+           </div>
+         </div>
+       </div>
+
+       <!-- Bootstrap core JavaScript
+       ================================================== -->
+
+  </body>
+</html>
