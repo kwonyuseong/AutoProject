@@ -25,90 +25,151 @@
     <script>
 
     /* * * * * * *
-dd
-    0메일에서온 키 갚을 불러온다.
 
-    1키NO를 넣으면 쿼리문을 만들어준다
-      1-1 (2018 06 13)
-      개행이 있는 엑셀 열을 붙여 넣으면 'xxxxx', 의 형태로 출력됨
-      1-2
-
-    2 쿼리를 날리고 데이터를 받아온다
-
-    3 넣은 값과 돌아온 값을 비교하는 페이지를 만든다.
-
-    4 참된 결과일 경우 삭제 처리를 실행한다
-
-    4-1 하나라도 일치 하지 않는경우 작업을 전면 중단한다.
-
-    5 쿼리를 다시 날리고 엑셀에 결과를 만든다 색칠하고 칸 색칠하고 이쁘게 꾸민다
-
-    6 완료 메일을 보낸다
+2018 / 10 / 28 시작
       * * * * * * */
 
 
-  /* * * * * * *
-   * 진행 상황 2018 06 13
-   * 2018 06 28
-   * * * * * * *
-      2시간 반 정도 만듬
-      엑셀의 두 개의 열을 같이 붙여 넣으면 오른쪽에 탭이 남는 현상이 발생
-      추후 수정 예정 그러나 귀찮
-      충분히 사용가능한 성능임
-      **********************
-      개행이 두번일 경우에는 에러가 나옴 -> 것도 에러 갯수마다 에러가 뜨니 한번만으로 수정
-      키넘버는 특정 자리수를 가지고 있다 6자리인가 자리수도 확인하기
-    * * * * * * */
-
+//모두 준비 되면 시작
   $(document).ready(function(){
-    $('#change').click(function(){
-      change();
+
+    //Active function 함수
+    // 변환 시작
+    $('#oneLineChange').click(function(){
+      var inputChecksum = "68114R900-03-";
+      var checkResult   = "";
+
+      //공백제거
+      inputChecksum = inputChecksum.trim();
+
+      //자리수와 문장갯수를 를 확인한다
+          //체크함수
+          //결과는 문자열 TRUE 와 에러메세지 로 돌아온다
+      checkResult = inputCheck(inputChecksum);
+
+      if(checkResult == "TRUE"){
+        oneLineChanege(inputChecksum);
+      }else{
+        //MSG 출력
+        alert(checkResult);
+      }
+
+
     });
 
-    function change(){
 
-      var text_split
-      //입력값을 가져온다
-      var text = $("#input_text").val();
-      var result_text = "";
-      text =  $.trim(text);
+    //필요한지 모르겟는데 일단 설정
+    init();
 
-    //엔터 단위로 자른다.
-      text_split = text.split('\n');
-    //한줄씩 읽어 간다
-    for (var i = 0; i < text_split.length; i++) {
-      if(text_split[i] == "" || text_split[i] == "\n" || text_split[i] == "\t" ){
-        alert("ERROR");
-      }else{
-        //탭제거
-        text_split[i] = text_split[i].replace('\t', "");
-        //text_split[i] 의 공백을 없엔다.
-        text_split[i] = text_split[i].replace(/ /g, "");
-        //text_split[i] 의 공백을 없엔다.
-        text_split[i] = text_split[i].replace('', "");
-          //
-          if(text_split.length == (i+1)){
-            text_split[i] = "'" + text_split[i] + "'";
-          }else{
-            text_split[i] = "'" + text_split[i] + "',\n";
-          }
-          result_text = result_text + text_split[i];
+    function init(){
+
+    }
+
+    // 1장문 입력과 단문 입력으로나눈다 한줄,여러줄
+
+    //단문일 경우에는 하나의 행만 바꾼다.
+    function oneLineChanege(arg_inputChecksum){
+      //test값 넣는 곳
+      var result = new Array;
+
+      // TODO checkSumType check 테수트후 이 밑 내용을 따로 함수 로 만들것
+      /*
+          type1-ari
+          type1-nasi
+          type2-ari
+          type2-nasi
+          type3-ari
+          type3-nasi
+      */
+
+      //test 値
+      makeCheckSum = "type3-ari";
+
+      //타입 3의 변환 함수호출
+      if(makeCheckSum == "type3-ari"){
+      result =  makeCheckSumCode3ari(arg_inputChecksum);
+      }else if(makeCheckSum == "type3-nasi"){
+        makeCheckSumCode3nasi(arg_inputChecksum);
       }
-    }
-    output(result_text);
+
+      $('#result_text').text(result);
 
 
-
-      //양쪽 공백 제거
-      //양쪽
     }
 
+    //장문일 경우에 엔터로 구분한다.
+    function Allchange(){
+      //입력수를 센다
 
-    function output(arg_text){
-      $('#result_text').empty();
-      $('#result_text').text(arg_text);
+      //입력 수만큼 makeCheckSumCode를 호출한다
+
+      //호출한 코드를 저장하고 html 넘긴다.
+
     }
-  });
+
+
+    function makeCheckSumCode3ari(arg_inputChecksum){
+
+        var makeCheckSumArray = new Array;
+        var countInputChecksum = 0;
+      countInputChecksum = arg_inputChecksum.length;
+
+        //결과를 만들고
+        for(var  i = 0 ; i < countInputChecksum ; i++ ){
+          makeCheckSumArray[i] = arg_inputChecksum.charAt(i);
+
+          if(makeCheckSumArray[i] != "-"){
+
+          }
+
+        }
+
+        return makeCheckSumArray;
+        console.log(makeCheckSumArray);
+
+
+        //현제 테스트는 하이픈이 있는 버전으로 간
+    }
+
+
+    function inputCheck(inputChecksum){
+      var msg   = "";
+      var check = "TRUE";
+      var countInputChecksum = 0;
+      var inputArray = new Array;
+
+      countInputChecksum = inputChecksum.length;
+      console.log(inputChecksum.length);
+
+        //문자열의 길이를 확인
+        if(countInputChecksum != 13){
+          check = "FALSE";
+          msg =msg+"桁数が違います"
+        }
+        //문자열 자르고 10 번 13번 자리에 하이픈이 있는지 확인
+          //문자로 나누기
+        for(var  i = 0 ; i < countInputChecksum ; i++ ){
+          inputArray[i] = inputChecksum.charAt(i);
+        }
+        console.log(inputArray);
+          //10번째 하이픈
+        if(inputArray[9] != "-"){
+          check = "FALSE";
+          //13번째 하이픈
+        }else if( inputArray[12] != "-"){
+          check = "FALSE";
+        }else{
+          msg =msg+"形式が違いますtype３ではありません"　
+        }
+
+
+        //에러발생시 메세지로 전송
+        if(check != "TRUE"){
+          check = msg;
+        }
+          return check;
+    }
+  });//document.ready END
 
 
     </script>
@@ -200,7 +261,7 @@ dd
 
               <div class="col-md-12">
                 <h2 class="sub-header">ボタン</h2>
-                    <button class="btn btn" type="button" name="button" id="change" >両横に’をつける</button>
+                    <button class="btn btn" type="button" name="button" id="oneLineChange" >TESTCEHCKSUM</button>
 
 
                 <div class="table-responsive">
